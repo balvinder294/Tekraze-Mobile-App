@@ -4,31 +4,43 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-
+import { DetailPage } from '../pages/detail/detail';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { HttpClientModule } from '@angular/common/http';
+import { ApiProvider } from '../providers/api/api';
+import { SearchPage } from '../pages/search/search';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    ListPage
+    DetailPage,
+    SearchPage
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    HttpClientModule,
+    IonicModule.forRoot(MyApp,{
+      platforms: {
+        ios: {
+          backButtontext: ''
+        }
+      }
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage
+    DetailPage,
+    SearchPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    ApiProvider
   ]
 })
 export class AppModule {}

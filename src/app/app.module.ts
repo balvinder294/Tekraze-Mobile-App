@@ -10,6 +10,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiProvider } from '../providers/api/api';
 import { SearchPage } from '../pages/search/search';
+import { AdMobFree } from '@ionic-native/admob-free';
+import { AppMinimize } from '@ionic-native/app-minimize';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { SearchPage } from '../pages/search/search';
   providers: [
     StatusBar,
     SplashScreen,
+    AppMinimize,
+    AdMobFree,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider
   ]

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController, NavParams, Platform } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { DetailPage } from '../detail/detail';
 import { SearchPage } from '../search/search';
+import { AdMobFreeBannerConfig, AdMobFree, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
+import { AppMinimize } from '@ionic-native/app-minimize';
 
 @Component({
   selector: 'page-home',
@@ -18,7 +20,13 @@ export class HomePage {
   private category_id:number = 0;
   private sort:string = '0';
 
-  constructor(public navCtrl: NavController, public api:ApiProvider, public navParams: NavParams) {
+  constructor( public navCtrl: NavController,
+               public api:ApiProvider, 
+               public navParams: NavParams,
+               public admob:AdMobFree,
+               private appMinimize: AppMinimize,
+               private platform:Platform) {
+    this.showBanner();
     if(this.navParams.get('category_id')!=null && this.navParams.get('category_id') !=undefined ){
       this.category_id = this.navParams.get('category_id');
     }
@@ -42,6 +50,8 @@ export class HomePage {
         if( data.length === this.per_page){
           this.page++;
           this.showLoadMore = true;
+          this.showBanner();
+          this.launchInterstitial();
         }
       if(infiniteScroll){
         infiniteScroll.complete();
@@ -70,4 +80,42 @@ export class HomePage {
     this.showLoadMore = false;
     this.getPosts();
   }
+
+  showBanner() {
+    console.log('Banner methid was called');
+
+    let bannerConfig: AdMobFreeBannerConfig = {
+        autoShow: true,
+        isTesting: false,
+        id : 'ca-app-pub-3447738154735769/7693504766'
+    };
+
+    this.admob.banner.config(bannerConfig);
+    this.admob.banner.prepare().then(() => {
+        // success
+        console.log('ad was shown');
+    }).catch(e => console.log(e));
+  }
+
+  launchInterstitial() {
+    console.log('Inter methid was called');
+    let interstitialConfig: AdMobFreeInterstitialConfig = {
+        isTesting: true, // Remove in production
+        autoShow: true,
+        id: 'ca-app-pub-3447738154735769~6408343251'
+    };
+
+    this.admob.interstitial.config(interstitialConfig);
+
+    this.admob.interstitial.prepare().then(() => {
+        // success
+    });
+
 }
+
+//  this.platform.registerBackButtonAction(() =>{
+//    this.appMinimize.minimize();
+//  });
+
+}
+

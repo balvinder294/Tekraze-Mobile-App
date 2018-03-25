@@ -24,7 +24,6 @@
 <ion-refresher (ionRefresh)='getPosts($event)' >
     <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
-
     <ion-card *ngFor='let item of items' (click)="openDetail(item)">
         <img src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
         <ion-card-content>

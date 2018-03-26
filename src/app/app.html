@@ -1,5 +1,6 @@
 <ion-menu [content]="content">
   <ion-header>
+          <img src="{{logoUrl}}">
     <ion-toolbar color="primary">
       <ion-title>Category</ion-title>
     </ion-toolbar>
@@ -12,6 +13,9 @@
           </button>
       <button menuClose ion-item *ngFor="let category of api.Categories" (click)="openPage(category.id)">
         <h4 color="second">{{category.name}}</h4>
+      </button>
+      <button color="info" menuClose ion-item (click)="openAboutPage()">
+        <h4 color="primary"><ion-icon name="information-circle"></ion-icon> &nbsp; About App</h4>
       </button>
     </ion-list>
   </ion-content>

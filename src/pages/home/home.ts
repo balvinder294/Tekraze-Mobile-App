@@ -26,6 +26,11 @@ export class HomePage {
                public admob:AdMobFree,
                private appMinimize: AppMinimize,
                private platform:Platform) {
+    
+    this.platform.registerBackButtonAction(() =>{
+      this.appMinimize.minimize();
+    });
+
     this.showBanner();
     if(this.navParams.get('category_id')!=null && this.navParams.get('category_id') !=undefined ){
       this.category_id = this.navParams.get('category_id');
@@ -113,9 +118,7 @@ export class HomePage {
 
 }
 
-//  this.platform.registerBackButtonAction(() =>{
-//    this.appMinimize.minimize();
-//  });
+
 
 }
 

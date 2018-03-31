@@ -9,33 +9,69 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>  
     </button>
-    <ion-title>{{post.title.rendered}}</ion-title>
+    <ion-title> <div [innerHtml]="post.title.rendered"></div></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content>
-    <img src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
+    <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
     <div padding>
-        <h1>{{post.title.rendered}}</h1>
+        <h1> <div [innerHtml]="post.title.rendered"></div></h1>
         <ion-row>
-            <ion-badge color="second">
-              {{api.getCategoryName(post.categories[0])}}
-            </ion-badge>
-            <ion-badge color="light">
-              <ion-icon name="time"></ion-icon>
-              {{post.date|date: "dd:MM.yyyy / hh:mm"}}
-            </ion-badge>
-
-            <ion-badge color="light">
-                <ion-icon name="author"></ion-icon>
-                {{post._embedded.author[0].name}}
-            </ion-badge>
+            <ion-item>
+              <ion-avatar item-start>
+                  <img src="{{post._embedded.author[0].avatar_urls['48']}}"/>
+              </ion-avatar>
+              <h2 color="secondary">{{post._embedded.author[0].name}}</h2>
+              <ion-badge color="second">
+                  {{api.getCategoryName(post.categories[0])}}
+              </ion-badge>
+                <br>
+              <ion-badge color="light">
+                  <ion-icon name="time"></ion-icon>
+                  {{post.date|date: "dd:MM.yyyy / hh:mm"}}
+                </ion-badge>
+            </ion-item>
           </ion-row>
 
           <div [innerHTML]="post.content.rendered"></div>
     </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-row>
+          <ion-col col-xs-6 col-sm-6 float-left>
+              <h1 color="postTitle">Comments :  </h1>
+          </ion-col>
+          <!---
+          <ion-col col-sm-6 col-xs-6 float-right>
+              <button ion-button color="secondary" click="openCommentPage(post._links.replies[0].href)">
+                  <ion-icon name="add"></ion-icon>New Comment</button>
+          </ion-col>
+          -->
+        </ion-row>
+
+        <span> 
+
+           </span>
+      </ion-card-header>
+      <div class="comment-item" *ngFor="let comment of comments">
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="{{comment.author_avatar_urls['24']}}" alt="comment author"/>
+            <h2>{{comment.author_name}}</h2>
+            <p>
+                {{comment.date|date: "dd:MM.yyyy"}}
+            </p>
+          </ion-avatar>
+        </ion-item>
+
+        <ion-card-content>
+          <div [innerHtml]="comment.content.rendered"></div> 
+        </ion-card-content>
+      </div>
+    </ion-card>
 
     <h2 padding-left>Related Posts</h2>
     <div *ngIf="isLoading" text-center padding>

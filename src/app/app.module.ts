@@ -14,6 +14,7 @@ import { AdMobFree } from '@ionic-native/admob-free';
 import { AppMinimize } from '@ionic-native/app-minimize';
 import { AppVersion } from '@ionic-native/app-version';
 import { AboutPage } from '../pages/about/about';
+import { CommentsPage } from '../pages/comments/comments';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { AboutPage } from '../pages/about/about';
     HomePage,
     DetailPage,
     SearchPage,
-    AboutPage
+    AboutPage,
+    CommentsPage
   ],
   imports: [
     BrowserModule,
@@ -40,7 +42,8 @@ import { AboutPage } from '../pages/about/about';
     HomePage,
     DetailPage,
     SearchPage,
-    AboutPage
+    AboutPage,
+    CommentsPage
   ],
   providers: [
     StatusBar,

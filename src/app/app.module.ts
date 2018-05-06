@@ -15,6 +15,9 @@ import { AppMinimize } from '@ionic-native/app-minimize';
 import { AppVersion } from '@ionic-native/app-version';
 import { AboutPage } from '../pages/about/about';
 import { CommentsPage } from '../pages/comments/comments';
+import { HttpModule } from '@angular/http';
+import { AdsServiceProvider } from '../providers/ads-service/ads-service';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,7 @@ import { CommentsPage } from '../pages/comments/comments';
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     IonicModule.forRoot(MyApp,{
       platforms: {
         ios: {
@@ -52,7 +56,9 @@ import { CommentsPage } from '../pages/comments/comments';
     AdMobFree,
     AppVersion,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ApiProvider
+    ApiProvider,
+    AdsServiceProvider,
+    SocialSharing
   ]
 })
 export class AppModule {}

@@ -11,30 +11,34 @@ import { AdMobFreeBannerConfig, AdMobFree, AdMobFreeInterstitialConfig, AdMobFre
 @Injectable()
 export class AdsServiceProvider {
 
-  clickCount: any;
+  clickCount: any;  
 
   constructor(public http: HttpClient,
               public admob: AdMobFree) {
     console.log('Hello AdsDerviceProvider Provider');
+    this.clickCount = 0;
   }
 
   incrementCounter(){
     console.log(this.clickCount);
     this.clickCount +=1;
     console.log(this.clickCount);
+    this.showAds();
   }
 
-  showVideo(){
-    if (this.clickCount%8 == 0){
+  showAds(){
+    if (this.clickCount % 8 == 0){
       console.log('count was for click',this.clickCount);
       this.launchInterstitial();
-    } else if (this.clickCount%17 == 1){
+    } else if (this.clickCount % 17 == 0){
       this.showVideoAdd();
+    }
+    else {
+      console.log('else case for ads');
     }
   }
 
   showVideoAdd(){
-    // ca-app-pub-3447738154735769/9714615484
     console.log('video ad was called');
 
     let videoConfig: AdMobFreeRewardVideoConfig = {
@@ -55,7 +59,7 @@ export class AdsServiceProvider {
     let bannerConfig: AdMobFreeBannerConfig = {
         autoShow: true,
         isTesting: false,
-        id : 'ca-app-pub-3447738154735769/7693504766'
+        id : 'ca-app-pub-3447738154735769/7693504766',
     };
 
     this.admob.banner.config(bannerConfig);

@@ -18,6 +18,8 @@ import { CommentsPage } from '../pages/comments/comments';
 import { HttpModule } from '@angular/http';
 import { AdsServiceProvider } from '../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Device } from '@ionic-native/device';
+import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
 @NgModule({
   declarations: [
@@ -58,7 +60,9 @@ import { SocialSharing } from '@ionic-native/social-sharing';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     ApiProvider,
     AdsServiceProvider,
-    SocialSharing
+    SocialSharing,
+    Device,
+    StripHtmlProvider
   ]
 })
 export class AppModule {}

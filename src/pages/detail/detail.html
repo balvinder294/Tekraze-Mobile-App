@@ -15,7 +15,7 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
     <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
     <div padding>
         <h1> <div [innerHtml]="post.title.rendered"></div></h1>
@@ -71,43 +71,55 @@
           <div [innerHtml]="comment.content.rendered"></div> 
         </ion-card-content>
       </div>
-      <ion-infinite-scroll [enabled]="morePagesAvailable" (ionInfinite)="loadMoreComments($event)">
-        <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more comments...">
-        </ion-infinite-scroll-content>
-      </ion-infinite-scroll>
     </ion-card>
 
 <!-- Sharing buttons-->
 <ion-fab right bottom>
-    <button ion-fab color="light"><ion-icon name="share"></ion-icon></button>
+    <button ion-fab color="dark"><ion-icon name="share"></ion-icon></button>
     <ion-fab-list side="left">
-      <button ion-fab (click)="instaShare()"><ion-icon name="logo-instagram"></ion-icon></button>
-      <button ion-fab (click)="twitterShare()"><ion-icon name="logo-twitter"></ion-icon></button>
-      <button ion-fab (click)="whatsappShare()"><ion-icon name="logo-whatsapp"></ion-icon></button>
-      <button ion-fab (click)="facebookShare()"><ion-icon name="logo-facebook"></ion-icon></button>
+      <button ion-fab color="dark" (click)="instaShare()"><ion-icon name="logo-instagram"></ion-icon></button>
+      <button ion-fab color="dark" (click)="twitterShare()"><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab color="dark" (click)="whatsappShare()"><ion-icon name="logo-whatsapp"></ion-icon></button>
+      <button ion-fab color="dark" (click)="facebookShare()"><ion-icon name="logo-facebook"></ion-icon></button>
     </ion-fab-list>
   </ion-fab>
     
-    <h2 padding-left>Related Posts</h2>
+    <h2 padding-left item-center color="secondary">Related Posts</h2>
     <div *ngIf="isLoading" text-center padding>
         <ion-spinner></ion-spinner>
-      </div>
-      <div padding>
+    </div>
+    <div >
           <ion-card *ngFor='let item of relateditems' (click)="openDetail(item)">
-              <img src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
+              <img height="180px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
               <ion-card-content>
                 <ion-card-title>
-                  {{item.title.rendered}}
+                  <div [innerHTML]="item.title.rendered"></div>
                   </ion-card-title>
+
                   <ion-row>
-                    <ion-badge color="second">
-                      {{api.getCategoryName(item.categories[0])}}
-                    </ion-badge>
-                    <ion-badge color="light">
-                      <ion-icon name="time"></ion-icon>
-                      {{item.date|date: "dd:MM.yyyy / hh:mm"}}</ion-badge>
+                    <ion-item (click)="openDetail(item)" col-sm-9 col-md-9 col-xs-9>
+                      <ion-avatar  item-start>
+                            <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
+                      </ion-avatar>
+                      <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
+                      <ion-badge color="second">
+                            {{api.getCategoryName(item.categories[0])}}
+                      </ion-badge>
+                          <br>
+                      <ion-badge color="light">
+                            <ion-icon name="time"></ion-icon>
+                            {{item.date|date: "dd:MM.yyyy / hh:mm"}}
+                      </ion-badge>
+                    </ion-item>
+
+                    <ion-item col-sm-3 col-xs-3 col-md-3>
+                        <button ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
+                            <ion-icon name="share"></ion-icon>
+                          </button>
+                     </ion-item>
                   </ion-row>
+
               </ion-card-content>
             </ion-card>
-      </div>
+    </div>
 </ion-content>

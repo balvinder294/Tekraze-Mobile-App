@@ -80,6 +80,7 @@ export class HomePage {
 
   openSearchPage(){
     this.navCtrl.push(SearchPage);
+    this.adsService.incrementCounter();
   }
 
   changeSort(){

@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { CommentsPage } from '../comments/comments';
 import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { StripHtmlProvider } from '../../providers/strip-html/strip-html';
 
 /**
  * Generated class for the DetailPage page.
@@ -20,6 +21,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 })
 export class DetailPage {
 
+  instaShareMessageHtml: string;
   instaShareMessage: string;
   morePagesAvailable: boolean;
   public post:any = [];
@@ -36,21 +38,29 @@ export class DetailPage {
         public api:ApiProvider,
         private modalCtrl: ModalController,
         public adsService: AdsServiceProvider,
-        private socialSharing: SocialSharing
+        private socialSharing: SocialSharing,
+        private stripHtml: StripHtmlProvider
       ) {
    this.post = navParams.get('post');
-   console.log(this.post ,'this post variable');
    this.shareImage = this.post._embedded['wp:featuredmedia'][0].source_url;
    this.shareLink = this.post.link;
    this.shareMessage = this.post.excerpt.rendered;
-   this.instaShareMessage = this.post.excerpt.rendered = " Check here :" + this.post.link; 
+   this.instaShareMessageHtml = this.post.excerpt.rendered = " Check here :" + this.post.link;
+   this.instaShareMessage = this.instaShareMessageHtml;
+   this.convertHtmlToString();
+  }
+
+  convertHtmlToString(){
+    let parser = new DOMParser ();
+    parser.parseFromString(this.shareMessage,'text/html');
+
+    console.log(parser);
   }
 
   ionViewDidLoad() {
     this.morePagesAvailable = true;
     this.getrelated();
     this.getcomments();
-    this.adsService.showBanner();
   }
 
 

@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.tekraze.blog" version="0.0.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.tekraze.blog" version="0.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Tekraze Blog</name>
     <description>Official App of Tekraze Blog</description>
-    <author email="balvinder294@gmail.com" href="https://tekraze.com/">Tekraze Team</author>
+    <author email="balvinder294@gmail.com" href="https://tekraze.com/">Balvinder Singh</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />

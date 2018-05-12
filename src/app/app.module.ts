@@ -14,6 +14,12 @@ import { AdMobFree } from '@ionic-native/admob-free';
 import { AppMinimize } from '@ionic-native/app-minimize';
 import { AppVersion } from '@ionic-native/app-version';
 import { AboutPage } from '../pages/about/about';
+import { CommentsPage } from '../pages/comments/comments';
+import { HttpModule } from '@angular/http';
+import { AdsServiceProvider } from '../providers/ads-service/ads-service';
+import { SocialSharing } from '@ionic-native/social-sharing';
+import { Device } from '@ionic-native/device';
+import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
 @NgModule({
   declarations: [
@@ -21,11 +27,13 @@ import { AboutPage } from '../pages/about/about';
     HomePage,
     DetailPage,
     SearchPage,
-    AboutPage
+    AboutPage,
+    CommentsPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     IonicModule.forRoot(MyApp,{
       platforms: {
         ios: {
@@ -40,7 +48,8 @@ import { AboutPage } from '../pages/about/about';
     HomePage,
     DetailPage,
     SearchPage,
-    AboutPage
+    AboutPage,
+    CommentsPage
   ],
   providers: [
     StatusBar,
@@ -49,7 +58,11 @@ import { AboutPage } from '../pages/about/about';
     AdMobFree,
     AppVersion,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    ApiProvider
+    ApiProvider,
+    AdsServiceProvider,
+    SocialSharing,
+    Device,
+    StripHtmlProvider
   ]
 })
 export class AppModule {}

@@ -19,13 +19,37 @@
     <img src="{{logo}}">
   </ion-card>
   <ion-card padding>
-    <h3 text-center>Official App of Tekraze Blog </h3>
-    <h3 text-center>Developed by :&nbsp;<span color="primary">Balvinder Singh</span> </h3>
-  </ion-card>
+    <ion-card-title color="primary" text-center>
+        Official App of Tekraze Blog
+    </ion-card-title>
+    <ion-card-content>
+        <h3 text-center color="secondary">Developed by :&nbsp;<span color="primary">Balvinder Singh</span> </h3>
+        <h3 text-center color="secondary">Email :&nbsp;<span color="primary">Balvinder294@gmail.com</span> </h3>
+        <h3 text-center color="secondary">Git Profile :&nbsp;<span color="primary"><a href="https://github.com/balvinder294">Balvinder294</a></span> </h3>  
+    </ion-card-content>
+    </ion-card>
   <ion-card padding>  
-    <h2 text-center color="second">Contact</h2>
-    <br>
-    <ion-icon color="primary" name="mail">&nbsp; tekraze786@gmail.com (Tekraze)</ion-icon>
-    <ion-icon color="primary"  name="mail">&nbsp; balvinder294@gmail.com (Developer)</ion-icon>
+    <ion-card-title text-center color="primary">
+        Contact 
+    </ion-card-title>
+    <ion-card-content>
+      <p><ion-icon color="primary" name="mail"></ion-icon>&nbsp;&nbsp;Tekraze786@gmail.com (Tekraze)</p>
+      <p><ion-icon color="primary" name="mail"></ion-icon>&nbsp;&nbsp;Balvinder294@gmail.com (Developer)</p>
+      <p>Website Link: &nbsp;&nbsp;<a href="https://tekraze.com">Tekraze</a></p>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card padding>
+    <ion-card-title text-center color="primary">
+      Device Details
+    </ion-card-title>
+
+    <ion-card-content>
+      <p><span color="primary">Device platform:</span> {{devicePlatform}}</p>
+      <p><span color="primary">Device Model:</span> {{deviceModel}}</p>
+      <p><span color="primary">App name:</span> {{appName}}</p>
+      <p><span color="primary">Version :</span> {{versionNumber}}</p>
+      <p><span color="primary">Package :</span> {{packageName}}</p>
+    </ion-card-content>
   </ion-card>
 </ion-content>

@@ -5,6 +5,8 @@ import { DetailPage } from '../detail/detail';
 import { SearchPage } from '../search/search';
 import { AdMobFreeBannerConfig, AdMobFree, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
 import { AppMinimize } from '@ionic-native/app-minimize';
+import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 @Component({
   selector: 'page-home',
@@ -25,17 +27,19 @@ export class HomePage {
                public navParams: NavParams,
                public admob:AdMobFree,
                private appMinimize: AppMinimize,
-               private platform:Platform) {
-    
-    this.platform.registerBackButtonAction(() =>{
-      this.appMinimize.minimize();
-    });
+               private platform:Platform,
+               private socialSharing: SocialSharing,
+               private adsService: AdsServiceProvider) {
 
-    this.showBanner();
+    this.adsService.showBanner();
     if(this.navParams.get('category_id')!=null && this.navParams.get('category_id') !=undefined ){
       this.category_id = this.navParams.get('category_id');
     }
     this.getPosts();    
+  }
+
+  incrementClick(){
+    this.adsService.incrementCounter();
   }
 
   getPosts(infiniteScroll = null){
@@ -55,8 +59,6 @@ export class HomePage {
         if( data.length === this.per_page){
           this.page++;
           this.showLoadMore = true;
-          this.showBanner();
-          this.launchInterstitial();
         }
       if(infiniteScroll){
         infiniteScroll.complete();
@@ -72,11 +74,13 @@ export class HomePage {
   }
 
   openDetail(item){
+    this.incrementClick();
     this.navCtrl.push(DetailPage, {post: item});
   }
 
   openSearchPage(){
     this.navCtrl.push(SearchPage);
+    this.adsService.incrementCounter();
   }
 
   changeSort(){
@@ -86,39 +90,14 @@ export class HomePage {
     this.getPosts();
   }
 
-  showBanner() {
-    console.log('Banner methid was called');
 
-    let bannerConfig: AdMobFreeBannerConfig = {
-        autoShow: true,
-        isTesting: false,
-        id : 'ca-app-pub-3447738154735769/7693504766'
-    };
+  // <button ion-button block (click)="shareSheetShare(item.title.rendered,item.excerpt.rendered,item._embedded['wp:featuredmedia'][0].source_url)"> shareSheetShare </button>
 
-    this.admob.banner.config(bannerConfig);
-    this.admob.banner.prepare().then(() => {
-        // success
-        console.log('ad was shown');
-    }).catch(e => console.log(e));
-  }
-
-  launchInterstitial() {
-    console.log('Inter methid was called');
-    let interstitialConfig: AdMobFreeInterstitialConfig = {
-        isTesting: true, // Remove in production
-        autoShow: true,
-        id: 'ca-app-pub-3447738154735769~6408343251'
-    };
-
-    this.admob.interstitial.config(interstitialConfig);
-
-    this.admob.interstitial.prepare().then(() => {
-        // success
+  share(message,title,image,link) {
+    this.socialSharing.share(message, title,image, link).then(() => {
+      console.log("shareSheetShare: Success");
+    }).catch(() => {
+      console.error("shareSheetShare: failed");
     });
-
+  }
 }
-
-
-
-}
-

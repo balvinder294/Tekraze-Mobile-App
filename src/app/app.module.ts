@@ -19,7 +19,6 @@ import { HttpModule } from '@angular/http';
 import { AdsServiceProvider } from '../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Device } from '@ionic-native/device';
-import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
 @NgModule({
   declarations: [
@@ -61,8 +60,7 @@ import { StripHtmlProvider } from '../providers/strip-html/strip-html';
     ApiProvider,
     AdsServiceProvider,
     SocialSharing,
-    Device,
-    StripHtmlProvider
+    Device
   ]
 })
 export class AppModule {}

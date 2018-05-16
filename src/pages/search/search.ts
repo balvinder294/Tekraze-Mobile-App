@@ -31,13 +31,11 @@ export class SearchPage {
   }
 
   onSearch(){
-      console.log('on search method was called');
       this.items = [];
       this.getPosts();
   }
 
   getPosts(){
-    console.log('this.getposts method was called');
     if(!this.isLoading && this.searchQuery.length > 0){
       this.isLoading = true;
       this.api.get('posts?_embed&per_page='+ this.per_page + '&page=' + this.page + '&search='+ this.searchQuery)

@@ -10,17 +10,19 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item>
-    <ion-label text-right>Sort</ion-label>
-    <ion-select [(ngModel)]="sort" (ionChange)="changeSort()">
-      <ion-option value="0">New to old</ion-option>
-      <ion-option value="1">Old to new</ion-option>
-      <ion-option value="2">A to Z</ion-option>
-      <ion-option value="3">Z to A</ion-option>
-    </ion-select>
-  
-  </ion-item>
+<ion-content>
+<ion-card>
+    <ion-item color="light">
+        <ion-label color="primary" text-left>Home </ion-label>
+        <ion-label text-right>Sort</ion-label>
+        <ion-select [(ngModel)]="sort" (ionChange)="changeSort()">
+          <ion-option value="0">New to old</ion-option>
+          <ion-option value="1">Old to new</ion-option>
+          <ion-option value="2">A to Z</ion-option>
+          <ion-option value="3">Z to A</ion-option>
+        </ion-select>
+      </ion-item>
+</ion-card>
 <ion-refresher (ionRefresh)='getPosts($event)' >
     <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
@@ -42,7 +44,7 @@
                       <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
                 </ion-avatar>
                 <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
-                <ion-badge color="second">
+                <ion-badge color="secondary">
                       {{api.getCategoryName(item.categories[0])}}
                 </ion-badge>
                     <br>

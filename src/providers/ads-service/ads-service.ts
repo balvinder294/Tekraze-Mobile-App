@@ -42,7 +42,7 @@ export class AdsServiceProvider {
     console.log('video ad was called');
 
     let videoConfig: AdMobFreeRewardVideoConfig = {
-      autoShow: true,
+      autoShow: false,
       isTesting: false,
       id: 'ca-app-pub-3447738154735769/9714615484'
     }
@@ -50,12 +50,12 @@ export class AdsServiceProvider {
     this.admob.rewardVideo.config(videoConfig);
     this.admob.rewardVideo.prepare().then(() => {
       console.log('video reward ad was shown');
+      this.admob.rewardVideo.show();
     }).catch(e => console.log(e));
   }
 
   showBanner() {
     console.log('Banner methid was called');
-
     let bannerConfig: AdMobFreeBannerConfig = {
         autoShow: true,
         isTesting: false,

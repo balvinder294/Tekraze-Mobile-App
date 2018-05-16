@@ -6,7 +6,6 @@ import { Http } from '@angular/http';
 import { CommentsPage } from '../comments/comments';
 import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
-import { StripHtmlProvider } from '../../providers/strip-html/strip-html';
 
 /**
  * Generated class for the DetailPage page.
@@ -38,8 +37,7 @@ export class DetailPage {
         public api:ApiProvider,
         private modalCtrl: ModalController,
         public adsService: AdsServiceProvider,
-        private socialSharing: SocialSharing,
-        private stripHtml: StripHtmlProvider
+        private socialSharing: SocialSharing
       ) {
    this.post = navParams.get('post');
    this.shareImage = this.post._embedded['wp:featuredmedia'][0].source_url;
@@ -47,15 +45,8 @@ export class DetailPage {
    this.shareMessage = this.post.excerpt.rendered;
    this.instaShareMessageHtml = this.post.excerpt.rendered = " Check here :" + this.post.link;
    this.instaShareMessage = this.instaShareMessageHtml;
-   this.convertHtmlToString();
   }
 
-  convertHtmlToString(){
-    let parser = new DOMParser ();
-    parser.parseFromString(this.shareMessage,'text/html');
-
-    console.log(parser);
-  }
 
   ionViewDidLoad() {
     this.morePagesAvailable = true;

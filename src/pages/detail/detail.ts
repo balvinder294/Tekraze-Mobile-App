@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { NavController, NavParams, ModalController } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { HttpClient } from '@angular/common/http';
@@ -8,13 +8,7 @@ import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { StripHtmlProvider } from '../../providers/strip-html/strip-html';
 
-/**
- * Generated class for the DetailPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
+import { DomSanitizer} from '@angular/platform-browser';
 @Component({
   selector: 'page-detail',
   templateUrl: 'detail.html',
@@ -31,6 +25,10 @@ export class DetailPage {
   shareMessage: string;
   shareLink: string;
   shareImage: string;
+  vukkelCommentsUrl: string;
+  vukkelEmoteUrl: string;
+  vukkelApiKey: string;
+  vukkelVariable: any;
 
   public isLoading:boolean = false;
   constructor(public navCtrl: NavController,
@@ -39,7 +37,10 @@ export class DetailPage {
         private modalCtrl: ModalController,
         public adsService: AdsServiceProvider,
         private socialSharing: SocialSharing,
-        private stripHtml: StripHtmlProvider
+        private stripHtml: StripHtmlProvider,
+        public sanatizer: DomSanitizer,
+        public elRef: ElementRef,
+        public renderer: Renderer2
       ) {
    this.post = navParams.get('post');
    this.shareImage = this.post._embedded['wp:featuredmedia'][0].source_url;
@@ -47,34 +48,29 @@ export class DetailPage {
    this.shareMessage = this.post.excerpt.rendered;
    this.instaShareMessageHtml = this.post.excerpt.rendered = " Check here :" + this.post.link;
    this.instaShareMessage = this.instaShareMessageHtml;
+   this.vukkelApiKey = 'fefbadaf-276f-4f72-8e73-e1a2acb6e966';
+   this.vukkelCommentsUrl = `https://cdn.vuukle.com/amp.html?apiKey=${this.vukkelApiKey}&host=tekraze.com&id=${this.post.id}&img=${this.shareImage}&title=${this.post.title.rendered}&url=${this.post.link}`;
+   this.vukkelEmoteUrl = `https://cdn.vuukle.com/widgets/emotes.html?apiKey=${this.vukkelApiKey}&host=tekraze.com&articleId=${this.post.id}&img=${this.shareImage}&title=${this.post.title.rendered}&url=${this.post.link}`;
    this.convertHtmlToString();
+  }
+
+  vuukleCommentUrl(){
+    return this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelCommentsUrl);
+  }
+
+  vuukleEmoteUrl(){
+    return this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelEmoteUrl);
   }
 
   convertHtmlToString(){
     let parser = new DOMParser ();
     parser.parseFromString(this.shareMessage,'text/html');
-
-    console.log(parser);
   }
 
   ionViewDidLoad() {
     this.morePagesAvailable = true;
+    this.adsService.showBanner();
     this.getrelated();
-    this.getcomments();
-  }
-
-
- getcomments(){
-    if(!this.isLoading){
-      this.isLoading = true;
-      this.api.get('comments?post='+ this.post.id).subscribe((comment)=>{
-        console.log(comment ,'comment was called');
-        this.isLoading = false;
-        this.comments = comment;
-    }, (error) => {
-      this.isLoading = false;
-    });
-    }
   }
 
   getrelated(){
@@ -94,37 +90,30 @@ export class DetailPage {
     this.navCtrl.push(DetailPage, {post: item});
   }
 
-  openCommentPage(url){
-    this.navCtrl.push(CommentsPage, {url:url});
-    console.log(this.comments,"method was callleddddddd");
-  }
-
   whatsappShare() {
     this.socialSharing.shareViaWhatsApp(this.shareMessage,this.shareImage,this.shareLink).then(() => {
-      console.log("shareViaWhatsApp: Success");
     }).catch(() => {
-      console.error("shareViaWhatsApp: failed");
     });
   }
   facebookShare() {
     this.socialSharing.shareViaFacebook( this.shareMessage,this.shareImage,this.shareLink).then(() => {
-      console.log("shareViaFacebook: Success");
-    }).catch(() => {
-      console.error("shareViaFacebook: failed");
+      }).catch(() => {
     });
   }
   instaShare() {
     this.socialSharing.shareViaInstagram( this.instaShareMessage, this.shareImage).then(() => {
-      console.log("shareViaInstagram: Success");
     }).catch(() => {
-      console.error("shareViaInstagram: failed");
     });
   }
   twitterShare() {
     this.socialSharing.shareViaTwitter( this.shareMessage,this.shareImage,this.shareLink).then(() => {
-      console.log("shareViaTwitter: Success");
     }).catch(() => {
-      console.error("shareViaTwitter: failed");
+    });
+  }
+
+  share(message,title,image,link) {
+    this.socialSharing.share(message, title,image, link).then(() => {
+    }).catch(() => {
     });
   }
 

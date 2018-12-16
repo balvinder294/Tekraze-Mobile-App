@@ -1,9 +1,10 @@
-<!--
-  Generated template for the DetailPage page.
+<style>
+  #vukkle_comment > .tot{
+    display: none;
+  }
+</style>
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
+<!-- Header bar -->
 <ion-header>
   <ion-navbar color="primary">
     <button ion-button menuToggle>
@@ -11,14 +12,17 @@
     </button>
     <ion-title> <div [innerHtml]="post.title.rendered"></div></ion-title>
   </ion-navbar>
-
 </ion-header>
 
-
-<ion-content padding>
-    <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
+<!--Content-->
+<ion-content (change)="hide()">
+    <ion-card>
+        <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
+    </ion-card>
     <div padding>
-        <h1> <div [innerHtml]="post.title.rendered"></div></h1>
+        <h1 text-align="center">  
+            <div text-center [innerHtml]="post.title.rendered"></div>
+        </h1>
         <ion-row>
             <ion-item>
               <ion-avatar item-start>
@@ -31,48 +35,33 @@
                 <br>
               <ion-badge color="light">
                   <ion-icon name="time"></ion-icon>
-                  {{post.date|date: "dd:MM.yyyy / hh:mm"}}
+                  {{post.date| timeAgo}}
                 </ion-badge>
             </ion-item>
-          </ion-row>
-
-          <div [innerHTML]="post.content.rendered"></div>
-    </div>
-    <ion-card>
-      <ion-card-header>
-        <ion-row>
-          <ion-col col-xs-6 col-sm-6 float-left>
-              <h1 color="postTitle">Comments :  </h1>
-          </ion-col>
-          <!---
-          <ion-col col-sm-6 col-xs-6 float-right>
-              <button ion-button color="secondary" click="openCommentPage(post._links.replies[0].href)">
-                  <ion-icon name="add"></ion-icon>New Comment</button>
-          </ion-col>
-          -->
         </ion-row>
+        <!-- <ion-card> -->
+          <div [innerHTML]="post.content.rendered"></div>
+        <!-- </ion-card> -->
+    </div>
 
-        <span> 
-
-           </span>
-      </ion-card-header>
-      <div class="comment-item" *ngFor="let comment of comments">
-        <ion-item>
-          <ion-avatar item-left>
-            <img src="{{comment.author_avatar_urls['24']}}" alt="comment author"/>
-            <h2>{{comment.author_name}}</h2>
-            <p>
-                {{comment.date|date: "dd:MM.yyyy"}}
-            </p>
-          </ion-avatar>
-        </ion-item>
-
-        <ion-card-content>
-          <div [innerHtml]="comment.content.rendered"></div> 
-        </ion-card-content>
-      </div>
+    <!--Emote-->
+    <ion-card>
+        <ion-row>
+          <ion-col col-sm-12 col-md-12 col-xs-12>
+            <iframe id="vukkle_emote" width="100%" height="100%" sandbox="allow-forms allow-scripts allow-same-origin" scrolling="auto" [src]="vuukleEmoteUrl()"
+            ></iframe>
+          </ion-col>
+        </ion-row>
+      </ion-card>
+    <!-- Comments -->
+    <ion-card>
+      <ion-row>
+        <ion-col col-sm-12 col-md-12 col-xs-12>
+          <iframe id="vukkle_comment" sandbox="allow-forms allow-scripts allow-same-origin" width="100%" height="290px" scrolling="auto" [src]="vuukleCommentUrl()"
+          ></iframe>
+        </ion-col>
+      </ion-row>
     </ion-card>
-
 <!-- Sharing buttons-->
 <ion-fab right bottom>
     <button ion-fab color="dark"><ion-icon name="share"></ion-icon></button>
@@ -82,44 +71,46 @@
       <button ion-fab color="dark" (click)="whatsappShare()"><ion-icon name="logo-whatsapp"></ion-icon></button>
       <button ion-fab color="dark" (click)="facebookShare()"><ion-icon name="logo-facebook"></ion-icon></button>
     </ion-fab-list>
-  </ion-fab>
+</ion-fab>
     
     <h2 padding-left item-center color="secondary">Related Posts</h2>
     <div *ngIf="isLoading" text-center padding>
         <ion-spinner></ion-spinner>
     </div>
-    <div >
-          <ion-card *ngFor='let item of relateditems' (click)="openDetail(item)">
-              <img height="180px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
-              <ion-card-content>
-                <ion-card-title>
-                  <div [innerHTML]="item.title.rendered"></div>
+    <!--Related  Items-->
+    <ion-grid>
+        <ion-row>
+            <ion-col col-sm-6 col-xs-12 col-md-4 *ngFor='let item of relateditems'>
+              <ion-card>
+                <ion-card-content (click)="openDetail(item)">
+                    <img height="280px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
+                  <ion-card-title>
+                    <div [innerHTML]="item.title.rendered"></div>
                   </ion-card-title>
-
                   <ion-row>
                     <ion-item (click)="openDetail(item)" col-sm-9 col-md-9 col-xs-9>
                       <ion-avatar  item-start>
-                            <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
+                        <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
                       </ion-avatar>
                       <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
                       <ion-badge color="second">
-                            {{api.getCategoryName(item.categories[0])}}
+                        {{api.getCategoryName(item.categories[0])}}
                       </ion-badge>
-                          <br>
+                      <br>
                       <ion-badge color="light">
-                            <ion-icon name="time"></ion-icon>
-                            {{item.date|date: "dd:MM.yyyy / hh:mm"}}
-                      </ion-badge>
+                        <ion-icon name="time"></ion-icon>
+                          {{item.date | timeAgo }}
+                        </ion-badge>
                     </ion-item>
-
                     <ion-item col-sm-3 col-xs-3 col-md-3>
                         <button ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
-                            <ion-icon name="share"></ion-icon>
-                          </button>
-                     </ion-item>
+                          <ion-icon name="share"></ion-icon>
+                        </button>
+                    </ion-item>
                   </ion-row>
-
-              </ion-card-content>
-            </ion-card>
-    </div>
+                </ion-card-content>
+          </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 </ion-content>

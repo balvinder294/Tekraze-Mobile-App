@@ -3,7 +3,7 @@ import { NavController, NavParams, Platform } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { DetailPage } from '../detail/detail';
 import { SearchPage } from '../search/search';
-import { AdMobFreeBannerConfig, AdMobFree, AdMobFreeInterstitialConfig } from '@ionic-native/admob-free';
+import { AdMobFree } from '@ionic-native/admob-free';
 import { AppMinimize } from '@ionic-native/app-minimize';
 import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
@@ -30,8 +30,6 @@ export class HomePage {
                private platform:Platform,
                private socialSharing: SocialSharing,
                private adsService: AdsServiceProvider) {
-
-    this.adsService.showBanner();
     if(this.navParams.get('category_id')!=null && this.navParams.get('category_id') !=undefined ){
       this.category_id = this.navParams.get('category_id');
     }
@@ -43,6 +41,7 @@ export class HomePage {
   }
 
   getPosts(infiniteScroll = null){
+    this.adsService.showBanner();
     if(!this.isLoading){
       this.isLoading = true;
       if(infiniteScroll!=null && infiniteScroll.ionRefresh){
@@ -90,14 +89,9 @@ export class HomePage {
     this.getPosts();
   }
 
-
-  // <button ion-button block (click)="shareSheetShare(item.title.rendered,item.excerpt.rendered,item._embedded['wp:featuredmedia'][0].source_url)"> shareSheetShare </button>
-
   share(message,title,image,link) {
     this.socialSharing.share(message, title,image, link).then(() => {
-      console.log("shareSheetShare: Success");
     }).catch(() => {
-      console.error("shareSheetShare: failed");
     });
   }
 }

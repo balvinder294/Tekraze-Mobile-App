@@ -21,6 +21,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Device } from '@ionic-native/device';
 import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
+import {TimeAgoPipe} from 'time-ago-pipe';  
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +30,8 @@ import { StripHtmlProvider } from '../providers/strip-html/strip-html';
     DetailPage,
     SearchPage,
     AboutPage,
-    CommentsPage
+    CommentsPage,
+    TimeAgoPipe
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-item>
     <ion-label text-right>Sort</ion-label>
     <ion-select [(ngModel)]="sort" (ionChange)="changeSort()">
@@ -26,39 +26,39 @@
 </ion-refresher>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor='let item of items' col-sm-4 col-xs-12 col-md-4 col-lg-3>
+      <ion-col *ngFor='let item of items' col-sm-6 col-xs-12 col-md-4 col-lg-3>
         <ion-card>
-          <span >
           <img height="180px" (click)="openDetail(item)" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
           <ion-card-content>
             <ion-row>
-                <ion-card-title (click)="openDetail(item)" color="postTitle" item-right>
-                    <div [innerHTML]="item.title.rendered" ></div>
+                <ion-card-title (click)="openDetail(item)" color="black" item-right>
+                    <div text-center [innerHTML]="item.title.rendered" ></div>
                 </ion-card-title>
             </ion-row>
-            <ion-row>
-              <ion-item (click)="openDetail(item)" col-sm-9 col-md-9 col-xs-9>
-                <ion-avatar  item-start>
-                      <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
-                </ion-avatar>
-                <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
-                <ion-badge color="second">
-                      {{api.getCategoryName(item.categories[0])}}
-                </ion-badge>
-                    <br>
-                <ion-badge color="light">
-                      <ion-icon name="time"></ion-icon>
-                      {{item.date|date: "dd:MM.yyyy / hh:mm"}}
-                </ion-badge>
-              </ion-item>
-              <ion-item col-sm-3 col-xs-3 col-md-3>
-                  <button ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
-                      <ion-icon name="share"></ion-icon>
+            <ion-grid>
+              <ion-row>
+                <ion-item (click)="openDetail(item)" col-sm-8 col-md-8 col-xs-8>
+                  <ion-avatar item-start>
+                      <img height="290px" src="{{item._embedded.author[0].avatar_urls['48']}}"/>
+                  </ion-avatar>
+                  <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
+                  <ion-badge color="second">
+                          {{api.getCategoryName(item.categories[0])}} &nbsp;
+                  </ion-badge>
+                      <br>
+                  <ion-badge color="light">
+                          <ion-icon name="time"></ion-icon>&nbsp;{{ item.date | timeAgo}}
+                  </ion-badge>
+                </ion-item>
+               <ion-item col-sm-3 col-xs-2 col-md-2>
+                  <button color="dark" ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
+                        <ion-icon name="share"></ion-icon>
                     </button>
-               </ion-item>
-            </ion-row>
+                </ion-item>
+              </ion-row>
+  
+            </ion-grid>
           </ion-card-content>
-          </span>
         </ion-card>
       </ion-col>
     </ion-row>
@@ -69,14 +69,4 @@
       <ion-infinite-scroll (ionInfinite)="getPosts($event)">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
       </ion-infinite-scroll>
-      <!---
-        ********
-        ****** for adding load more option
-
-      <div *ngIf="isLoading" text-center padding>
-        <ion-spinner></ion-spinner>
-      </div>
-      <button *ngIf="showLoadMore" ion-button full (click)='getPosts()'>Load More Posts</button>
-
-    -->
 </ion-content>

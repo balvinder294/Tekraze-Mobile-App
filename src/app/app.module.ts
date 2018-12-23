@@ -21,7 +21,8 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Device } from '@ionic-native/device';
 import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
-import {TimeAgoPipe} from 'time-ago-pipe';  
+import {TimeAgoPipe} from 'time-ago-pipe';
+import { VungleProvider } from '../providers/vungle/vungle';  
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {TimeAgoPipe} from 'time-ago-pipe';
     AdsServiceProvider,
     SocialSharing,
     Device,
-    StripHtmlProvider
+    StripHtmlProvider,
+    VungleProvider
   ]
 })
 export class AppModule {}

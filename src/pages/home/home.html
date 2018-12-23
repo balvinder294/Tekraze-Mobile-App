@@ -1,5 +1,5 @@
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="custom-1">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
@@ -10,8 +10,8 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
-  <ion-item>
+<ion-content class="content-background">
+  <ion-item class="content-background">
     <ion-label text-right>Sort</ion-label>
     <ion-select [(ngModel)]="sort" (ionChange)="changeSort()">
       <ion-option value="0">New to old</ion-option>
@@ -26,13 +26,13 @@
 </ion-refresher>
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor='let item of items' col-sm-6 col-xs-12 col-md-4 col-lg-3>
-        <ion-card>
+      <ion-col *ngFor='let item of items' col-sm-6 col-xs-12 col-md-4 col-lg-4>
+        <ion-card >
           <img height="180px" (click)="openDetail(item)" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
           <ion-card-content>
             <ion-row>
                 <ion-card-title (click)="openDetail(item)" color="black" item-right>
-                    <div text-center [innerHTML]="item.title.rendered" ></div>
+                    <h1 text-center [innerHTML]="item.title.rendered" ></h1>
                 </ion-card-title>
             </ion-row>
             <ion-grid>
@@ -46,7 +46,7 @@
                           {{api.getCategoryName(item.categories[0])}} &nbsp;
                   </ion-badge>
                       <br>
-                  <ion-badge color="light">
+                  <ion-badge color="custom-5">
                           <ion-icon name="time"></ion-icon>&nbsp;{{ item.date | timeAgo}}
                   </ion-badge>
                 </ion-item>

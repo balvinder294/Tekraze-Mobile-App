@@ -2,13 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
 import { DetailPage } from '../detail/detail';
-
-/**
- * Generated class for the SearchPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 
 @Component({
   selector: 'page-search',
@@ -23,29 +17,30 @@ export class SearchPage {
   private isLoading = false;
   searchQuery:string = '';
 
- constructor(public navCtrl: NavController, public navParams: NavParams,public api:ApiProvider) {
+ constructor(
+   public navCtrl: NavController,
+   public navParams: NavParams,
+   public api:ApiProvider,
+   public adsProvider: AdsServiceProvider
+  ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad SearchPage');
   }
 
   onSearch(){
-      console.log('on search method was called');
       this.items = [];
       this.getPosts();
   }
 
   getPosts(){
-    console.log('this.getposts method was called');
+    this.incrementAdsCounter();
     if(!this.isLoading && this.searchQuery.length > 0){
       this.isLoading = true;
       this.api.get('posts?_embed&per_page='+ this.per_page + '&page=' + this.page + '&search='+ this.searchQuery)
       .subscribe((data:any) => {
-        
         this.isLoading = false;
         this.items = this.items.concat(data);
-
         if( data.length === this.per_page){
           this.page++;
           this.showLoadMore = true;
@@ -68,11 +63,16 @@ export class SearchPage {
     this.items = [];
     this.page = 1;
     this.showLoadMore = false;
+    this.incrementAdsCounter();
   }
 
   openDetail(item){
+    this.incrementAdsCounter();
     this.navCtrl.push(DetailPage, {post: item});
   }
 
+  incrementAdsCounter(){
+    this.incrementAdsCounter
+  }
 
 }

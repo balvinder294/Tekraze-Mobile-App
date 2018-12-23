@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, NavController, App } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { AdsServiceProvider } from '../providers/ads-service/ads-service';
 
 import { HomePage } from '../pages/home/home';
 import { ApiProvider } from '../providers/api/api';
@@ -20,15 +21,14 @@ export class MyApp {
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public api: ApiProvider,
-              protected app:App
+              protected app:App,
+              public adsProvider: AdsServiceProvider
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
       this.api.getCategories();
       this.statusBar.styleDefault();
       this.splashScreen.hide();
@@ -36,8 +36,7 @@ export class MyApp {
   }
 
   openPage(category_id:number = 0) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
+    this.adsProvider.incrementCounter();
     this.nav.setRoot(HomePage, {category_id: category_id});
   }
 
@@ -46,6 +45,7 @@ export class MyApp {
   }
 
   openAboutPage(){
+    this.adsProvider.incrementCounter();
     this.navCtrl.push(AboutPage);
   }
 

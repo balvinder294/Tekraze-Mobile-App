@@ -6,41 +6,43 @@
 
 <!-- Header bar -->
 <ion-header>
-  <ion-navbar color="primary">
+  <ion-navbar color="custom-1">
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>  
     </button>
-    <ion-title> <div [innerHtml]="post.title.rendered"></div></ion-title>
+    <ion-title text-center> <div [innerHtml]="post.title.rendered"></div></ion-title>
   </ion-navbar>
 </ion-header>
 
 <!--Content-->
-<ion-content (change)="hide()">
+<ion-content class="content-background">
     <ion-card>
         <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
     </ion-card>
     <div padding>
-        <h1 text-align="center">  
-            <div text-center [innerHtml]="post.title.rendered"></div>
-        </h1>
         <ion-row>
-            <ion-item>
-              <ion-avatar item-start>
-                  <img src="{{post._embedded.author[0].avatar_urls['48']}}"/>
-              </ion-avatar>
-              <h2 color="secondary">{{post._embedded.author[0].name}}</h2>
-              <ion-badge color="second">
-                  {{api.getCategoryName(post.categories[0])}}
-              </ion-badge>
-                <br>
-              <ion-badge color="light">
-                  <ion-icon name="time"></ion-icon>
-                  {{post.date| timeAgo}}
-                </ion-badge>
-            </ion-item>
+          <ion-col col-xs-3 col-sm-3 col-lg-2>
+              <ion-item class="content-background"> 
+                  <ion-avatar item-start>
+                      <img src="{{post._embedded.author[0].avatar_urls['48']}}"/>
+                  </ion-avatar>
+                  <h2 color="secondary">{{post._embedded.author[0].name}}</h2>
+                  <ion-badge color="second">
+                      {{api.getCategoryName(post.categories[0])}}
+                  </ion-badge>
+                    <br>
+                  <ion-badge color="custom-5">
+                      <ion-icon name="time"></ion-icon>
+                      {{post.date| timeAgo}}
+                    </ion-badge>
+                </ion-item>
+          </ion-col>
+          <ion-col col-xs-9 col-sm-9 col-lg-10>
+              <h1 padding-top color="custom-2" [innerHtml]="post.title.rendered"></h1>
+          </ion-col>
         </ion-row>
         <!-- <ion-card> -->
-          <div [innerHTML]="post.content.rendered"></div>
+          <div class="post-content" [innerHTML]="post.content.rendered"></div>
         <!-- </ion-card> -->
     </div>
 
@@ -74,6 +76,7 @@
 </ion-fab>
     
     <h2 padding-left item-center color="secondary">Related Posts</h2>
+    <hr color="custom-2">
     <div *ngIf="isLoading" text-center padding>
         <ion-spinner></ion-spinner>
     </div>
@@ -83,9 +86,9 @@
             <ion-col col-sm-6 col-xs-12 col-md-4 *ngFor='let item of relateditems'>
               <ion-card>
                 <ion-card-content (click)="openDetail(item)">
-                    <img height="280px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
+                    <img height="290px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
                   <ion-card-title>
-                    <div [innerHTML]="item.title.rendered"></div>
+                    <h1 color="custom-2" [innerHTML]="item.title.rendered"></h1>
                   </ion-card-title>
                   <ion-row>
                     <ion-item (click)="openDetail(item)" col-sm-9 col-md-9 col-xs-9>
@@ -97,7 +100,7 @@
                         {{api.getCategoryName(item.categories[0])}}
                       </ion-badge>
                       <br>
-                      <ion-badge color="light">
+                      <ion-badge color="custom-5">
                         <ion-icon name="time"></ion-icon>
                           {{item.date | timeAgo }}
                         </ion-badge>

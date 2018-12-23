@@ -33,7 +33,8 @@ export class HomePage {
     if(this.navParams.get('category_id')!=null && this.navParams.get('category_id') !=undefined ){
       this.category_id = this.navParams.get('category_id');
     }
-    this.getPosts();    
+    this.adsService.showBanner();
+    this.getPosts();
   }
 
   incrementClick(){
@@ -41,7 +42,6 @@ export class HomePage {
   }
 
   getPosts(infiniteScroll = null){
-    this.adsService.showBanner();
     if(!this.isLoading){
       this.isLoading = true;
       if(infiniteScroll!=null && infiniteScroll.ionRefresh){
@@ -79,7 +79,7 @@ export class HomePage {
 
   openSearchPage(){
     this.navCtrl.push(SearchPage);
-    this.adsService.incrementCounter();
+    this.incrementClick();
   }
 
   changeSort(){
@@ -87,9 +87,11 @@ export class HomePage {
     this.page = 1;
     this.showLoadMore = false;
     this.getPosts();
+    this.incrementClick();
   }
 
   share(message,title,image,link) {
+    this.incrementClick();
     this.socialSharing.share(message, title,image, link).then(() => {
     }).catch(() => {
     });

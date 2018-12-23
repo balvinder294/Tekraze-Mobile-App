@@ -1,9 +1,6 @@
 import { Component, ElementRef, Renderer2 } from '@angular/core';
-import { NavController, NavParams, ModalController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { ApiProvider } from '../../providers/api/api';
-import { HttpClient } from '@angular/common/http';
-import { Http } from '@angular/http';
-import { CommentsPage } from '../comments/comments';
 import { AdsServiceProvider } from '../../providers/ads-service/ads-service';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { StripHtmlProvider } from '../../providers/strip-html/strip-html';
@@ -34,7 +31,6 @@ export class DetailPage {
   constructor(public navCtrl: NavController,
         public navParams: NavParams,
         public api:ApiProvider,
-        private modalCtrl: ModalController,
         public adsService: AdsServiceProvider,
         private socialSharing: SocialSharing,
         private stripHtml: StripHtmlProvider,
@@ -45,7 +41,7 @@ export class DetailPage {
    this.post = navParams.get('post');
    this.shareImage = this.post._embedded['wp:featuredmedia'][0].source_url;
    this.shareLink = this.post.link;
-   this.shareMessage = this.post.excerpt.rendered;
+   this.shareMessage = this.stripHtml.transform(this.post.excerpt.rendered);
    this.instaShareMessageHtml = this.post.excerpt.rendered = " Check here :" + this.post.link;
    this.instaShareMessage = this.instaShareMessageHtml;
    this.vukkelApiKey = 'fefbadaf-276f-4f72-8e73-e1a2acb6e966';
@@ -69,7 +65,6 @@ export class DetailPage {
 
   ionViewDidLoad() {
     this.morePagesAvailable = true;
-    this.adsService.showBanner();
     this.getrelated();
   }
 
@@ -85,33 +80,38 @@ export class DetailPage {
     }
   }
 
-  openDetail(item){
+  openDetail(item: any){
     this.adsService.incrementCounter();
     this.navCtrl.push(DetailPage, {post: item});
   }
 
   whatsappShare() {
+    this.adsService.incrementCounter();
     this.socialSharing.shareViaWhatsApp(this.shareMessage,this.shareImage,this.shareLink).then(() => {
     }).catch(() => {
     });
   }
   facebookShare() {
+    this.adsService.incrementCounter();
     this.socialSharing.shareViaFacebook( this.shareMessage,this.shareImage,this.shareLink).then(() => {
       }).catch(() => {
     });
   }
   instaShare() {
+    this.adsService.incrementCounter();
     this.socialSharing.shareViaInstagram( this.instaShareMessage, this.shareImage).then(() => {
     }).catch(() => {
     });
   }
   twitterShare() {
+    this.adsService.incrementCounter();
     this.socialSharing.shareViaTwitter( this.shareMessage,this.shareImage,this.shareLink).then(() => {
     }).catch(() => {
     });
   }
 
   share(message,title,image,link) {
+    this.adsService.incrementCounter();
     this.socialSharing.share(message, title,image, link).then(() => {
     }).catch(() => {
     });

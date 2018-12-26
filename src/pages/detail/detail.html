@@ -1,9 +1,3 @@
-<style>
-  #vukkle_comment > .tot{
-    display: none;
-  }
-</style>
-
 <!-- Header bar -->
 <ion-header>
   <ion-navbar color="custom-1">
@@ -15,52 +9,67 @@
 </ion-header>
 
 <!--Content-->
-<ion-content class="content-background">
-    <ion-card>
-        <img padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
-    </ion-card>
-    <div padding>
-        <ion-row>
-          <ion-col col-xs-3 col-sm-3 col-lg-2>
-              <ion-item class="content-background"> 
-                  <ion-avatar item-start>
-                      <img src="{{post._embedded.author[0].avatar_urls['48']}}"/>
-                  </ion-avatar>
-                  <h2 color="secondary">{{post._embedded.author[0].name}}</h2>
-                  <ion-badge color="second">
-                      {{api.getCategoryName(post.categories[0])}}
-                  </ion-badge>
-                    <br>
-                  <ion-badge color="custom-5">
-                      <ion-icon name="time"></ion-icon>
-                      {{post.date| timeAgo}}
-                    </ion-badge>
-                </ion-item>
-          </ion-col>
-          <ion-col col-xs-9 col-sm-9 col-lg-10>
-              <h1 padding-top color="custom-2" [innerHtml]="post.title.rendered"></h1>
-          </ion-col>
-        </ion-row>
-        <!-- <ion-card> -->
-          <div class="post-content" [innerHTML]="post.content.rendered"></div>
-        <!-- </ion-card> -->
-    </div>
+<ion-content  class="content-background">
 
-    <!--Emote-->
-    <ion-card>
-        <ion-row>
-          <ion-col col-sm-12 col-md-12 col-xs-12>
-            <iframe id="vukkle_emote" width="100%" height="100%" sandbox="allow-forms allow-scripts allow-same-origin" scrolling="auto" [src]="vuukleEmoteUrl()"
-            ></iframe>
-          </ion-col>
-        </ion-row>
-      </ion-card>
+  <!-- Image And Author Div -->
+  <ion-grid no-padding>
+    <ion-row wrap>  
+      <ion-col col-xs-12 col-sm-12>
+          <!-- Post Image -->
+        <ion-card no-padding>
+          <img height="190px" text-center padding src="{{post._embedded['wp:featuredmedia'][0].source_url}}">
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col col-xs-12 col-sm-12>
+          <!-- Post Title -->
+        <ion-item class="content-background">
+          <h2 text-wrap text-center color="custom-2" [innerHtml]="post.title.rendered"></h2>
+        </ion-item>
+          <!-- Post Author -->
+        <ion-item text-center class="content-background">
+          <ion-avatar>
+            <img class="avatars" src="{{post._embedded.author[0].avatar_urls['48']}}"/>
+          </ion-avatar>
+          <h2 color="secondary">{{post._embedded.author[0].name}}</h2>
+        </ion-item>
+          <!-- Category And Time -->
+        <ion-item text-center class="content-background">
+          <ion-badge color="second">
+            {{api.getCategoryName(post.categories[0])}}
+          </ion-badge>
+          <ion-badge color="custom-5">
+            <ion-icon name="time"></ion-icon>&nbsp;{{post.date| timeAgo}}
+          </ion-badge>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  
+  <!-- Post Content -->
+  <div padding-right padding-left class="post-content" [innerHTML]="post.content.rendered"></div>
+    
+  <!--Emote-->
+  <ion-card>
+    <ion-row>
+      <ion-col col-sm-12 col-md-12 col-xs-12>
+        <iframe id="vukkle_emote" width="100%" height="100%" seamless style="border:0;"
+            sandbox="allow-popups-to-escape-sandbox allow-popups allow-forms allow-scripts allow-same-origin" 
+            scrolling="auto" [src]="vukkelEmoteSanitizedUrl">
+        </iframe>
+      </ion-col>
+    </ion-row>
+  </ion-card>
     <!-- Comments -->
     <ion-card>
       <ion-row>
         <ion-col col-sm-12 col-md-12 col-xs-12>
-          <iframe id="vukkle_comment" sandbox="allow-forms allow-scripts allow-same-origin" width="100%" height="290px" scrolling="auto" [src]="vuukleCommentUrl()"
-          ></iframe>
+          <iframe id="vukkle_comment" sandbox="allow-popups-to-escape-sandbox allow-pointer-lock  allow-popups allow-forms allow-scripts allow-same-origin" 
+           style="border:0;" width="100%" height="290px" 
+          scrolling="auto" 
+          [src]="vukkelCommentsSanitizedUrl">
+        </iframe>
         </ion-col>
       </ion-row>
     </ion-card>
@@ -74,46 +83,49 @@
       <button ion-fab color="dark" (click)="facebookShare()"><ion-icon name="logo-facebook"></ion-icon></button>
     </ion-fab-list>
 </ion-fab>
+  <!-- Related Posts -->
+  <ion-item padding-left item-center color="custom-5">
+    <h2 text-center>Related Posts</h2>
+  </ion-item>
+  <!-- Line -->
+  <hr style="height:2px;" color="custom-2">
+  
+  <!-- Related Posts Loader/Spinner -->
+  <div *ngIf="isLoading" text-center padding>
+    <ion-spinner></ion-spinner>
+  </div>
     
-    <h2 padding-left item-center color="secondary">Related Posts</h2>
-    <hr color="custom-2">
-    <div *ngIf="isLoading" text-center padding>
-        <ion-spinner></ion-spinner>
-    </div>
-    <!--Related  Items-->
-    <ion-grid>
-        <ion-row>
-            <ion-col col-sm-6 col-xs-12 col-md-4 *ngFor='let item of relateditems'>
-              <ion-card>
-                <ion-card-content (click)="openDetail(item)">
-                    <img height="290px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
-                  <ion-card-title>
-                    <h1 color="custom-2" [innerHTML]="item.title.rendered"></h1>
-                  </ion-card-title>
-                  <ion-row>
-                    <ion-item (click)="openDetail(item)" col-sm-9 col-md-9 col-xs-9>
-                      <ion-avatar  item-start>
-                        <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
-                      </ion-avatar>
-                      <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
-                      <ion-badge color="second">
-                        {{api.getCategoryName(item.categories[0])}}
-                      </ion-badge>
-                      <br>
-                      <ion-badge color="custom-5">
-                        <ion-icon name="time"></ion-icon>
-                          {{item.date | timeAgo }}
-                        </ion-badge>
-                    </ion-item>
-                    <ion-item col-sm-3 col-xs-3 col-md-3>
-                        <button ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
-                          <ion-icon name="share"></ion-icon>
-                        </button>
-                    </ion-item>
-                  </ion-row>
-                </ion-card-content>
+  <!--Related Post Card-->
+  <ion-grid>
+    <ion-row>
+      <ion-col col-lg-3 col-sm-6 col-xs-12 col-md-4 *ngFor='let item of relateditems'>
+        <ion-card (click)="openDetail(item)">
+          <!-- Post Image -->
+          <img height="165px" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
+          <!-- Title And Avatar -->
+            <ion-item>
+              <ion-avatar item-start>
+                <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
+              </ion-avatar>
+              <h2 text-wrap color="custom-2" [innerHTML]="item.title.rendered"></h2>
+            </ion-item>
+          <!-- Categories Time and Share -->
+            <ion-item>
+              <ion-badge color="second">
+                {{api.getCategoryName(item.categories[0])}}
+              </ion-badge>
+              <ion-badge color="custom-5">
+                <ion-icon name="time"></ion-icon>
+                  {{item.date | timeAgo }}
+              </ion-badge>
+              <ion-badge item-end color="dark" ion-button round 
+                  (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
+                <ion-icon name="share">&nbsp;Share</ion-icon>
+              </ion-badge>      
+            </ion-item>
           </ion-card>
-            </ion-col>
-        </ion-row>
+        </ion-col>
+      </ion-row>
     </ion-grid>
+
 </ion-content>

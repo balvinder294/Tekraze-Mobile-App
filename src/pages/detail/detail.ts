@@ -23,7 +23,9 @@ export class DetailPage {
   shareLink: string;
   shareImage: string;
   vukkelCommentsUrl: string;
+  vukkelCommentsSanitizedUrl: any;
   vukkelEmoteUrl: string;
+  vukkelEmoteSanitizedUrl: any;
   vukkelApiKey: string;
   vukkelVariable: any;
 
@@ -48,15 +50,18 @@ export class DetailPage {
    this.vukkelCommentsUrl = `https://cdn.vuukle.com/amp.html?apiKey=${this.vukkelApiKey}&host=tekraze.com&id=${this.post.id}&img=${this.shareImage}&title=${this.post.title.rendered}&url=${this.post.link}`;
    this.vukkelEmoteUrl = `https://cdn.vuukle.com/widgets/emotes.html?apiKey=${this.vukkelApiKey}&host=tekraze.com&articleId=${this.post.id}&img=${this.shareImage}&title=${this.post.title.rendered}&url=${this.post.link}`;
    this.convertHtmlToString();
+  //  this.vukkelCommentsSanitizedUrl = this.sanatizer.bypassSecurityTrustUrl(this.vukkelCommentsUrl);
+  //  this.vukkelEmoteSanitizedUrl = this.sanatizer.bypassSecurityTrustUrl(this.vukkelEmoteUrl);
   }
 
   vuukleCommentUrl(){
-    return this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelCommentsUrl);
+    this.vukkelCommentsSanitizedUrl = this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelCommentsUrl);
+    this.vukkelEmoteSanitizedUrl = this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelEmoteUrl);
   }
 
-  vuukleEmoteUrl(){
-    return this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelEmoteUrl);
-  }
+// /  vuukleEmoteUrl(){
+    // return this.sanatizer.bypassSecurityTrustResourceUrl(this.vukkelEmoteUrl);
+  // }
 
   convertHtmlToString(){
     let parser = new DOMParser ();
@@ -65,6 +70,7 @@ export class DetailPage {
 
   ionViewDidLoad() {
     this.morePagesAvailable = true;
+    this.vuukleCommentUrl();
     this.getrelated();
   }
 

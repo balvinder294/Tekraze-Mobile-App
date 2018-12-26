@@ -10,55 +10,57 @@
   </ion-navbar>
 </ion-header>
 
+<!-- Main Content -->
 <ion-content class="content-background">
+  <!-- Search -->
   <ion-item class="content-background">
-    <ion-label text-right>Sort</ion-label>
-    <ion-select [(ngModel)]="sort" (ionChange)="changeSort()">
+    <!-- <ion-label text-right>Sort -->
+      <ion-badge item-end>
+          <ion-icon name="reorder"></ion-icon>
+      </ion-badge>
+    <!-- </ion-label> -->
+    <ion-select text-right [(ngModel)]="sort" (ionChange)="changeSort()">
       <ion-option value="0">New to old</ion-option>
       <ion-option value="1">Old to new</ion-option>
       <ion-option value="2">A to Z</ion-option>
       <ion-option value="3">Z to A</ion-option>
     </ion-select>
-  
   </ion-item>
+
+  <!-- Post Refresh -->
 <ion-refresher (ionRefresh)='getPosts($event)' >
     <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
+<!-- Post Grid -->
   <ion-grid>
     <ion-row>
-      <ion-col *ngFor='let item of items' col-sm-6 col-xs-12 col-md-4 col-lg-4>
+      <ion-col *ngFor='let item of items' col-sm-6 col-xs-12 col-md-4 col-lg-3>
         <ion-card >
-          <img height="180px" (click)="openDetail(item)" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
-          <ion-card-content>
-            <ion-row>
-                <ion-card-title (click)="openDetail(item)" color="black" item-right>
-                    <h1 text-center [innerHTML]="item.title.rendered" ></h1>
-                </ion-card-title>
-            </ion-row>
-            <ion-grid>
-              <ion-row>
-                <ion-item (click)="openDetail(item)" col-sm-8 col-md-8 col-xs-8>
-                  <ion-avatar item-start>
-                      <img height="290px" src="{{item._embedded.author[0].avatar_urls['48']}}"/>
-                  </ion-avatar>
-                  <h2 color="secondary">{{item._embedded.author[0].name}}</h2>
-                  <ion-badge color="second">
-                          {{api.getCategoryName(item.categories[0])}} &nbsp;
-                  </ion-badge>
-                      <br>
-                  <ion-badge color="custom-5">
-                          <ion-icon name="time"></ion-icon>&nbsp;{{ item.date | timeAgo}}
-                  </ion-badge>
-                </ion-item>
-               <ion-item col-sm-3 col-xs-2 col-md-2>
-                  <button color="dark" ion-button block (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
-                        <ion-icon name="share"></ion-icon>
-                    </button>
-                </ion-item>
-              </ion-row>
-  
-            </ion-grid>
-          </ion-card-content>
+          <img height="165px" (click)="openDetail(item)" src="{{item._embedded['wp:featuredmedia'][0].source_url}}">
+            <!-- Title and Avatar -->
+            <ion-item (click)="openDetail(item)">
+                <ion-avatar item-start>
+                    <img src="{{item._embedded.author[0].avatar_urls['48']}}"/>
+                </ion-avatar>
+                <h2 text-wrap [innerHTML]="item.title.rendered"></h2>
+            </ion-item>
+
+            <ion-item text-wrap>
+              <!-- Categories -->
+                <ion-badge color="second">
+                    {{api.getCategoryName(item.categories[0])}} &nbsp;
+                </ion-badge>
+                <!--  Time ago -->
+                <ion-badge color="custom-5">
+                    <ion-icon name="time"></ion-icon>&nbsp;{{ item.date | timeAgo}}
+                </ion-badge>
+                <!-- Share -->
+                <ion-badge item-end color="dark" 
+                  ion-button round
+                  (click)="share(item.excerpt.rendered,item.title.rendered,item._embedded['wp:featuredmedia'][0].source_url,item.link)">
+                <ion-icon name="share">&nbsp;Share</ion-icon>
+                </ion-badge>
+             </ion-item>
         </ion-card>
       </ion-col>
     </ion-row>

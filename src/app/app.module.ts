@@ -21,7 +21,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Device } from '@ionic-native/device';
 import { StripHtmlProvider } from '../providers/strip-html/strip-html';
 
-import {TimeAgoPipe} from 'time-ago-pipe';
+import { TimeAgoPipe } from 'time-ago-pipe';
 import { VungleProvider } from '../providers/vungle/vungle';  
 
 @NgModule({
@@ -32,7 +32,8 @@ import { VungleProvider } from '../providers/vungle/vungle';
     SearchPage,
     AboutPage,
     CommentsPage,
-    TimeAgoPipe
+    TimeAgoPipe,
+    StripHtmlProvider
   ],
   imports: [
     BrowserModule,

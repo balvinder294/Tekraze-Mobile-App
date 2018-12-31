@@ -15,9 +15,7 @@ export class AdsServiceProvider {
 
   incrementCounter(){
    this.clickCount +=1;
-  // this.platform.ready().then((ready)=>{
     this.showAds();
-  // });
   }
 
   showAds(){

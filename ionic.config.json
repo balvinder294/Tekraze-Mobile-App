@@ -1,7 +1,0 @@
-{
-  "name": "tekraze",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "ionic-angular"
-}
